@@ -1,4 +1,10 @@
 #include "DES.h"
+#include <iostream>
+
+#define DEC 0
+#define ENC 1
+
+using namespace std;
 
 /**
  * Sets the key to use
@@ -8,7 +14,7 @@
 bool DES::setKey(const unsigned char* keyArray)
 {
 	/**
-	 * First let's covert the char string
+	 * First let's convert the char string
 	 * into an integer byte string
 	 */
 	
@@ -67,6 +73,7 @@ bool DES::setKey(const unsigned char* keyArray)
  */
 unsigned char* DES::encrypt(const unsigned char* plaintext)
 {
+	
 	//LOGIC:
 	//1. Declare an array DES_LONG block[2];
 	//2. Use ctol() to convert the first 4 chars into long; store the result in block[0]
@@ -77,8 +84,23 @@ unsigned char* DES::encrypt(const unsigned char* plaintext)
 	//7. Save the results in the dynamically allocated char array 
 	// (e.g. unsigned char* bytes = new unsigned char[8]).
 	//8. Return the pointer to the dynamically allocated array.
-	
-	return NULL;
+
+	unsigned char cipherText = new unsigned char[8];	//dynamic array of type char, size 8 
+
+	DES_LONG block[2] = {};	//declare array of type DES_LONG of size 2 (4 bytes each for total of 8 bytes)
+
+	block[0] = ctol(const_cast<unsigned char*>(plaintext));	//convert the first 4 chars into long; store the result in block[0]
+	block[1] = ctol(const_cast<unsigned char*>(plaintext) + 4);	//convert the second 4 chars into long; store the result in block[1]
+
+	DES_encrypt1(block, &this->key, ENC);	//perform des_encrypt1 in order to encrypt the block using this->key
+	memset(cipherText, 0, 9);
+
+	ltoc(block[0], cipherText);	//convert the first ciphertext long to 4 characters using ltoc()
+	ltoc(block[1], cipherText + 4);	//convert the second ciphertext long to 4 characters using ltoc()
+
+	fprintf(stderr, "Ciphertext: %s\n", cipherText);	//print ciphertext to check
+
+	return cipherText;	
 }
 
 /**
@@ -91,7 +113,22 @@ unsigned char* DES::decrypt(const unsigned char* ciphertext)
 	//LOGIC:
 	// Same logic as encrypt(), except in step 4. decrypt instead of encrypting
 	//
-	return NULL;
+	unsigned char plainText = new unsigned char[8];	//dynamic array of type char, size 8 
+
+	DES_LONG block[2] = {};	//declare array of type DES_LONG of size 2 (4 bytes each for total of 8 bytes)
+
+	block[0] = ctol(const_cast<unsigned char*>(ciphertext));	//convert the first 4 chars into long; store the result in block[0]
+	block[1] = ctol(const_cast<unsigned char*>(ciphertext) + 4);	//convert the second 4 chars into long; store the result in block[1]
+
+	DES_encrypt1(block, &this->key, DEC);	//perform des_encrypt1 in order to decrypt the block using this->key
+	memset(ciphertext, 0, 9);
+
+	ltoc(block[0], plainText);	//convert the first ciphertext long to 4 characters using ltoc()
+	ltoc(block[1], plainText + 4);	//convert the second ciphertext long to 4 characters using ltoc()
+
+	fprintf(stderr, "Plaintext: %s\n", cipherText);	//print ciphertext to check
+
+	return plainText;
 }
 
 /**
