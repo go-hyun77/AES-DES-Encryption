@@ -1,4 +1,7 @@
+#include <iostream>
 #include "AES.h"
+
+using namespace std;
 
 /**
  * Sets the key to use
@@ -26,9 +29,19 @@ bool AES::setKey(const unsigned char* keyArray)
 	// For documentation, please see https://boringssl.googlesource.com/boringssl/+/2623/include/openssl/aes.h
 	// and aes.cpp example provided with the assignment.
 	
-	
+	const unsigned char* keybit;
+	keybit = keyArray + 1; //pass in first byte to indicate if enc or dec
+
+	if (keyArray[0] = '0') {
+		AES_set_encrypt_key(keybit, 128, &this->key); 
+		return true;
+	}
+	else {
+		AES_set_decrypt_key(keybit, 128, &this->key); 
+		return true;
+	}
+
 	return false;
-	
 }
 
 /**	
@@ -39,12 +52,17 @@ bool AES::setKey(const unsigned char* keyArray)
 unsigned char* AES::encrypt(const unsigned char* plainText)
 {
 	
-	//TODO: 1. Dynamically allocate a block to store the ciphertext.
+	//TODO: 
+	//  1. Dynamically allocate a block to store the ciphertext.
 	//	2. Use AES_ecb_encrypt(...) to encrypt the text (please see the URL in setKey(...)
-	//	and the aes.cpp example provided.
+	//	   and the aes.cpp example provided.
 	// 	3. Return the pointer to the ciphertext
+
+	unsigned char* cipherText;
+	cipherText = new unsigned char[16]; //16 bytes for 128 bit key (8 bits for 1 byte
 		
-	return NULL;	
+	AES_ecb_encrypt(plainText, cipherText, &this->key, AES_ENCRYPT); //refer to myaes.cpp example
+	return cipherText;	 
 }
 
 /**
@@ -59,9 +77,13 @@ unsigned char* AES::decrypt(const unsigned char* cipherText)
 	//	2. Use AES_ecb_encrypt(...) to decrypt the text (please see the URL in setKey(...)
 	//	and the aes.cpp example provided.
 	// 	3. Return the pointer to the plaintext
-		
-	return NULL;
-}
+
+	unsigned char* plainText;
+	plainText = new unsigned char[16];	//16 bytes for 128 bit key (8 bits for 1 byte
+	
+	AES_ecb_encrypt(cipherText, plainText, &this->key, AES_DECRYPT);
+	return plainText; 
+} 
 
 
 
