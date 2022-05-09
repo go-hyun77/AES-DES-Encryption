@@ -84,10 +84,9 @@ unsigned char* DES::encrypt(const unsigned char* plaintext)
 	//7. Save the results in the dynamically allocated char array 
 	// (e.g. unsigned char* bytes = new unsigned char[8]).
 	//8. Return the pointer to the dynamically allocated array.
-
-	unsigned char cipherText = new unsigned char[8];	//dynamic array of type char, size 8 
-
 	DES_LONG block[2] = {};	//declare array of type DES_LONG of size 2 (4 bytes each for total of 8 bytes)
+
+	unsigned char* cipherText = new unsigned char[8];	//dynamic array of type char, size 8 
 
 	block[0] = ctol(const_cast<unsigned char*>(plaintext));	//convert the first 4 chars into long; store the result in block[0]
 	block[1] = ctol(const_cast<unsigned char*>(plaintext) + 4);	//convert the second 4 chars into long; store the result in block[1]
@@ -113,20 +112,20 @@ unsigned char* DES::decrypt(const unsigned char* ciphertext)
 	//LOGIC:
 	// Same logic as encrypt(), except in step 4. decrypt instead of encrypting
 	//
-	unsigned char plainText = new unsigned char[8];	//dynamic array of type char, size 8 
-
 	DES_LONG block[2] = {};	//declare array of type DES_LONG of size 2 (4 bytes each for total of 8 bytes)
+
+	unsigned char* plainText = new unsigned char[8];	//dynamic array of type char, size 8 
 
 	block[0] = ctol(const_cast<unsigned char*>(ciphertext));	//convert the first 4 chars into long; store the result in block[0]
 	block[1] = ctol(const_cast<unsigned char*>(ciphertext) + 4);	//convert the second 4 chars into long; store the result in block[1]
 
 	DES_encrypt1(block, &this->key, DEC);	//perform des_encrypt1 in order to decrypt the block using this->key
-	memset(ciphertext, 0, 9);
+	memset(plainText, 0, 9);
 
 	ltoc(block[0], plainText);	//convert the first ciphertext long to 4 characters using ltoc()
 	ltoc(block[1], plainText + 4);	//convert the second ciphertext long to 4 characters using ltoc()
 
-	fprintf(stderr, "Plaintext: %s\n", cipherText);	//print ciphertext to check
+	fprintf(stderr, "Plaintext: %s\n", plainText);	//print ciphertext to check
 
 	return plainText;
 }
@@ -181,7 +180,7 @@ unsigned char DES::charToHex(const char& character)
 		/* Conver the cgaracter to hex */
 		return (character - 97) + 10;	
 	/* Invalid character */
-	else return 'z';
+	else { return 'z'; }
 }
 
 /**

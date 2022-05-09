@@ -32,11 +32,13 @@ bool AES::setKey(const unsigned char* keyArray)
 	const unsigned char* keybit;
 	keybit = keyArray + 1; //pass in first byte to indicate if enc or dec
 
-	if (keyArray[0] = '0') {
+	if (keyArray[0] == '0') 
+	{
 		AES_set_encrypt_key(keybit, 128, &this->key); 
 		return true;
 	}
-	else {
+	else 
+	{
 		AES_set_decrypt_key(keybit, 128, &this->key); 
 		return true;
 	}
