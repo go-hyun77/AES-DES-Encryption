@@ -1,15 +1,14 @@
-To compile, simply, type ''make'' at the terminal (without the quotes).
+To compile, type ''make'' at the terminal (without the quotes).
 
-Please do not forget to include a README file in your submission.
-It's worth 5 points.
+To execute:
 
-Your README file should include:
+./cipher <CIPHER NAME> <KEY> <ENC/DEC> <INPUT FILE> <OUTPUT FILE>
 
-– Names and email addresses of all partners.
-– The programming language you use (e.g. C++ or Java)
-– How to execute your program.
-– Whether you implemented the extra credit.
-– Anything special about your submission that we should take note of.
+Example: 
+
+./cipher AES "00112233445566778899aabbccddeeff" ENC in.txt out.txt
+
+Group Members:
 
 Wangmo Tenzing (wangmot@csu.fullerton.edu)
 Gordon Huynh (gordonhuynh001@csu.fullerton.edu)
@@ -17,3 +16,5 @@ Phillip Pham (gephiltafish@csu.fullerton.edu)
 Dennis Tye (dennis.tye@csu.fullerton.edu)
 
 Language: C++
+
+Extra credit not attempted.
